@@ -83,6 +83,12 @@ int main()
     stdio_init_all();
     // inicialização do teclado
     keypad_init();
+    
+    gpio_init(Buzzer);
+    gpio_set_dir(Buzzer, GPIO_OUT);
+
+    printf("Sistema inicializado. Pressione uma tecla.\n");
+
     while (true)
     {
         // definir os valores para comparação
@@ -96,5 +102,34 @@ int main()
         // acender_led(led_R); acende o led vermelho
 
         // acender o led de acordo com o valor do teclado
+
+        // Lê a tecla pressionada
+        char key = read_keypad();
+
+        if (key != '\0') // Verifica se alguma tecla foi pressionada
+        {
+            printf("Tecla pressionada: %c\n", key);
+
+            // Acionamento dos LEDs com base no valor pressionado
+            switch (key)
+            {
+            case '1':
+                acender_led(led_G); // Acende o LED verde
+                break;
+            case '2':
+                acender_led(led_B); // Acende o LED azul
+                break;
+            case '3':
+                acender_led(led_R); // Acende o LED vermelho
+                break;
+            case 'A':
+                acionar_buzzer(); // Aciona o buzzer
+                break;
+            default:
+                printf("Tecla sem função associada.\n");
+                break;
+            }
+        }
+        sleep_ms(100); // Pequena pausa para evitar leituras repetidas
     }
 }
